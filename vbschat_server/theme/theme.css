@@ -1,0 +1,147 @@
+html{
+	height: 100%;
+}
+body{
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: "Arial";
+}
+#header{
+	margin: auto;
+	background-color: #003340;
+	padding: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+}
+#header h1{
+	margin: 0;
+	margin-top: 10px;
+	font-family: "Arial";
+	color: white;
+}
+.centered{
+	text-align: center;
+	margin: auto;
+}
+#header img{
+	display: block;
+	margin: auto;
+	margin-left: 0;
+	height: 50px;
+}
+
+#content{
+	overflow-y: visible;
+	text-align: center;
+	margin: auto;
+}
+#content h1{
+	font-size: 3em;
+	padding-top: 50px;
+	margin: 0;
+}
+#content h2{
+	font-size: 2em;
+	padding-top: 30px;
+	margin: 0;
+}
+#content form{
+	margin-top: 40px;
+}
+#content table{
+	border-collapse: collapse;
+	width: 95%;
+	margin: auto;
+	margin-bottom: 20px;
+}
+#content th, td{
+	padding: 2px;
+	text-align: left;
+	border: 1px solid darkgrey;
+}
+a{
+	text-decoration: none;
+}
+.textbox{
+	display: block;
+	margin: auto;
+	width: 50%;
+	min-width: 300px;
+	border: 1px darkgrey;
+}
+.button{
+	width: 10%;
+	min-width: 200px;
+	display: block;
+	margin: auto;
+	margin-top: 30px;
+	padding: 5px 10px;
+	font-size: 1em;
+	background-color: #003340;
+	text-align: center;
+	color: white;
+	border: none;
+}
+.button:hover {
+    background-color: #66848c;
+}
+.button_list{
+	width: 10%;
+	min-width: 200px;
+	display: block;
+	margin: auto;
+	margin-top: 5px;
+	padding: 5px 10px;
+	font-family: "Arial";
+	font-size: 1em;
+	background-color: #003340;
+	text-align: center;
+	color: white;
+	border: none;
+}
+.button_list:hover {
+    background-color: #66848c;
+}
+#footer{
+	height: 30px;
+	background-color: #003340;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+}
+#footer p{
+	margin: 0;
+	padding: 5px;
+	display: inline-block;
+	text-align: left;
+	color: #ffffff;
+}
+#loading{
+	margin: auto;
+	background-color: #003340;
+	padding: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+}
+#loading img{
+	display: block;
+	margin: auto;
+	margin-left: 0;
+	height: 170px;
+}
+#loading h3{
+	margin: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+	text-align: center;
+	color: #ffffff;
+}
+#loading p{
+	margin: auto;
+	margin-top: 0;
+	text-align: center;
+	color: #ffffff;
+}

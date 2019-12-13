@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VBSchat Server</title>
+	<hta:application
+	applicationname="VBSchat Server"
+	id="vbschatsvr"
+	innerborder="no"
+	icon="..\theme\icon.ico"
+	scroll="no"
+	singleinstance="yes"
+	contextmenu="no"
+	selection="no"
+	navigable="yes"
+	maximizeButton="no"
+	/>
+	<link rel="stylesheet" type="text/css" href="../theme/theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="cache-control" content="no-cache">
+</head>
+
+<script language="VBScript">
+Sub Window_OnLoad
+	window.resizeto 1280,720
+	Set fs = CreateObject("Scripting.FileSystemObject")
+	If fs.FolderExists("C:\vbschat") Then
+		window.location = "alreadyAServer.hta"
+	End If
+End Sub
+Sub create_clicked
+	serverPasswd = passwordInput.value
+	If serverPasswd = "" Then
+		MsgBox("Bitte geben Sie ein Passwort ein")
+	Else
+		vbschatuser = "vbschat"
+		Set fs = CreateObject("Scripting.FileSystemObject")
+		set objSystem = GetObject("WinNT://.")
+		set objUser = objSystem.Create("user", vbschatuser)
+		objUser.SetPassword serverPasswd
+		objUser.SetInfo
+
+		fs.CreateFolder "C:\vbschat"
+		fs.CreateFolder "C:\vbschat\users"
+		fs.CreateFolder "C:\vbschat\onlineUsers"
+
+
+		Set wmi = GetObject("winmgmts://./root/cimv2")
+
+		Set trustee = wmi.Get("Win32_Trustee").SpawnInstance_()
+		trustee.Domain = Null
+		trustee.Name   = "vbschat"
+		trustee.SID    = Array(1,1,0,0,0,0,0,1,0,0,0,0) 'SID S-1-1-0 (binary)
+
+		Set ace = wmi.Get("Win32_Ace").SpawnInstance_()
+		ace.AccessMask = 2032127  'full access
+		ace.AceFlags   = 3        'object inheritance + container inheritance
+		ace.AceType    = 0        'allow access
+		ace.Trustee    = trustee
+
+		Set sd = wmi.Get("Win32_SecurityDescriptor").SpawnInstance_()
+		sd.DACL = Array(ace)
+
+		Set share = wmi.Get("Win32_Share")
+		share.Create "C:\vbschat", "vbschat", 0, 20, "Share for vbschat", "", sd
+
+		window.location = "server_create_success.hta"
+	End If
+End Sub
+</script>
+
+<body id="body">
+    <div id="header">
+      <img src="../theme/logo.png" />
+	  <h1>Server erstellen</h1>
+    </div>
+    <div id="content">
+		<h3>Server Passwort:</h3>
+		<input type="password" class="textbox" id="passwordInput">
+		<p class="button"onclick="create_clicked">Server erstellen</p>
+		<br />
+		<a href="server_home.hta" class="button">Zur&uuml;ck</a>
+    </div>
+    <div id="footer">
+      <p>&copy;2018 pomegr4nate</p>
+    </div>
+  </body>
+</html>

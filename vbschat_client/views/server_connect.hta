@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VBSchat</title>
+	<hta:application
+	applicationname="VBSchat"
+	id="vbschat"
+	innerborder="no"
+	icon="..\theme\icon.ico"
+	scroll="yes"
+	singleinstance="yes"
+	contextmenu="no"
+	selection="no"
+	navigable="yes"
+	/>
+	<link rel="stylesheet" type="text/css" href="../theme/theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="cache-control" content="no-cache">
+</head>
+
+<script language="VBScript">
+Sub Window_OnLoad
+	window.resizeto 1280,720
+End Sub
+
+Sub connect_click
+	On Error Resume Next
+	Set objNetwork = CreateObject("WScript.Network")
+	objNetwork.MapNetworkDrive "V:", "\\" & server.value & "\vbschat", False, "vbschat", passwd.value
+	If Err.Number <> 0 Then
+		window.location = "server_connection_error.hta"
+		Err.Clear
+	Else
+		window.location = "server_connection_successful.hta"
+	End If
+End Sub
+</script>
+
+<body id="body">
+    <div id="header">
+      <img src="../theme/logo.png" />
+    </div>
+    <div id="content">
+      <h1>Willkommen bei VBSchat</h1>
+      <h3>Bitte geben Sie hier den Rechnernamen oder die IP-Adresse des Servers ein:</h3>
+	  <p>Wenn dieser PC der Server ist, geben sie "localhost" ein</p>
+		<input type="text" id="server" class="textbox"/><br/>
+		<h3>Bitte geben Sie hier das Passwort des Servers ein:</h3>
+		<input type="password" id="passwd" class="textbox"/><br/>
+
+		<input type="submit" value="Verbinden" name="submit" class="button" onclick="connect_click"/>
+    </div>
+    <div id="footer">
+      <p>&copy;2018 pomegr4nate</p>
+    </div>
+  </body>
+</html>

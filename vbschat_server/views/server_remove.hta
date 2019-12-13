@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VBSchat Server</title>
+	<hta:application
+	applicationname="VBSchat Server"
+	id="vbschatsvr"
+	innerborder="no"
+	icon="..\theme\icon.ico"
+	scroll="no"
+	singleinstance="yes"
+	contextmenu="no"
+	selection="no"
+	navigable="yes"
+	maximizeButton="no"
+	/>
+	<link rel="stylesheet" type="text/css" href="../theme/theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="cache-control" content="no-cache">
+</head>
+
+<script language="VBScript">
+Sub Window_OnLoad
+	window.resizeto 1280,720
+	Set fs = CreateObject("Scripting.FileSystemObject")
+	If fs.FolderExists("C:\vbschat") = False Then
+		window.location = "notAServer.hta"
+	End If
+End Sub
+
+Sub remove_clicked
+	Set fs = CreateObject("Scripting.FileSystemObject")
+	vbschatuser = "vbschat"
+
+	GetObject("WinNT://.").Delete "user", vbschatuser
+	Set objWMIService = GetObject("winmgmts:" _
+		& "{impersonationLevel=impersonate}!\\.\root\cimv2")
+	Set colShares = objWMIService.ExecQuery _
+		("Select * from Win32_Share Where Name = 'vbschat'")
+	For Each objShare in colShares
+		objShare.Delete
+	Next
+
+	fs.DeleteFolder "C:\vbschat"
+
+	window.location = "server_remove_success.hta"
+End Sub
+</script>
+
+<body id="body">
+    <div id="header">
+      <img src="../theme/logo.png" />
+	  <h1>Server entfernen</h1>
+    </div>
+    <div id="content">
+		<h1>Soll der Server wirklich entfernt werden?</h1>
+		<a href="server_home.hta" class="button">Nein</a>
+		<p class="button" onclick="remove_clicked">Ja</p>
+    </div>
+    <div id="footer">
+      <p>&copy;2018 pomegr4nate</p>
+    </div>
+  </body>
+</html>

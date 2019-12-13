@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VBSchat</title>
+	<hta:application
+	applicationname="VBSchat"
+	id="vbschat"
+	innerborder="no"
+	icon="..\theme\icon.ico"
+	scroll="yes"
+	singleinstance="yes"
+	contextmenu="no"
+	selection="no"
+	navigable="yes"
+	/>
+	<link rel="stylesheet" type="text/css" href="../theme/theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="cache-control" content="no-cache">
+</head>
+
+<script language="VBScript">
+On Error resume Next
+Sub Window_OnLoad
+	On Error resume Next
+	window.resizeto 1280,720
+End Sub
+Sub open_click
+	On Error resume Next
+	Set fs = CreateObject("Scripting.FileSystemObject")
+	If fs.FileExists("V:\users\" & chatname.value) Then
+		window.location = "usernameUsed.hta"
+	Else
+		fs.CreateTextFile "V:\users\" & chatname.value, True
+		If fs.FileExists("vchatusr") Then
+			fs.DeleteFile("vchatusr")
+		End If
+		Set usrfile = fs.CreateTextFile("vchatusr")
+		usrfile.Write(chatname.value)
+		usrfile.Close()
+		window.location = "chat.hta"
+	End If
+End Sub
+</script>
+
+<body id="body">
+    <div id="header">
+      <img src="../theme/logo.png" />
+    </div>
+    <div id="content">
+      <h1>Die Verbindung zum Server war erfolgreich</h1>
+		<h3>Bitte geben Sie hier ihren Chatnamen ein:</h3>
+		<input type="text" id="chatname" class="textbox"/><br/>
+		<input type="submit" value="Chat &Ouml;ffnen" name="submit" class="button" onclick="open_click"/>
+    </div>
+    <div id="footer">
+      <p>&copy;2018 pomegr4nate</p>
+    </div>
+  </body>
+</html>

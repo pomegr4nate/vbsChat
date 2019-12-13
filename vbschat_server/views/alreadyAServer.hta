@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VBSchat Server</title>
+	<hta:application
+	applicationname="VBSchat Server"
+	id="vbschatsvr"
+	innerborder="no"
+	icon="..\theme\icon.ico"
+	scroll="no"
+	singleinstance="yes"
+	contextmenu="no"
+	selection="no"
+	navigable="yes"
+	maximizeButton="no"
+	/>
+	<link rel="stylesheet" type="text/css" href="../theme/theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="cache-control" content="no-cache">
+</head>
+
+<script language="VBScript">
+Sub Window_OnLoad
+	window.resizeto 1280,720
+End Sub
+</script>
+
+<body id="body">
+    <div id="header">
+      <img src="../theme/logo.png" />
+    </div>
+    <div id="content">
+      <h1>Dieser PC ist bereits ein VBSchat Server</h1>
+	  <a href="server_home.hta" class="button">Zur&uuml;ck</a>
+    </div>
+    <div id="footer">
+      <p>&copy;2018 pomegr4nate</p>
+    </div>
+  </body>
+</html>

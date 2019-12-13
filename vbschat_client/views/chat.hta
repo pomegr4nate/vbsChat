@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VBSchat</title>
+	<hta:application
+	applicationname="VBSchat"
+	id="vbschat"
+	innerborder="no"
+	icon="..\theme\icon.ico"
+	scroll="yes"
+	singleinstance="yes"
+	contextmenu="no"
+	selection="no"
+	navigable="yes"
+	/>
+	<link rel="stylesheet" type="text/css" href="../theme/chattheme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="cache-control" content="no-cache">
+	<meta charset="UTF-8">
+</head>
+
+<script language="VBScript">
+On Error resume Next
+Dim onlineUpdateTimer
+Dim UpdateMessagesTimer
+lastMessage = Timer()
+
+Set fs = CreateObject("Scripting.FileSystemObject")
+'Gets The Chat Name:'
+Set objFileToRead = fs.OpenTextFile("vchatusr",1)
+chatname = objFileToRead.ReadAll()
+objFileToRead.Close
+Set objFileToRead = Nothing
+
+Sub Window_OnLoad
+	On Error resume Next
+	onlineUpdateTimer = window.setTimeout("UpdateOnline", 250, "VBScript")
+	UpdateMessagesTimer = window.setTimeout("UpdateMessages", 250, "VBScript")
+End Sub
+
+'Sets the state to idle afte 5 minutes and updates the other user states'
+Sub UpdateOnline
+	On Error resume Next
+
+	If (Timer() - lastMessage) > 60*5 Then
+		Set onlineFile = fs.OpenTextFile("V:\onlineUsers\" & chatname, 2, true)
+		onlineFile.Write "idle"
+		Else
+		Set onlineFile = fs.OpenTextFile("V:\onlineUsers\" & chatname, 2, true)
+		onlineFile.Write "online"
+	End If
+
+	Set fileObj = fs.GetFile("V:\users.vchat")
+	Set ts = fileObj.OpenAsTextStream(1, -2)
+	Document.getElementById("side").innerHtml=""
+	Do While ts.AtEndOfStream <> True
+		line = Split(deactivateHTML(ts.ReadLine),";")
+		If line(0) = "idle" Then
+			Document.getElementById("side").innerHtml = Document.getElementById("side").innerHtml + "<p style=""color:orange;"">" & line(1) & "</p>"
+			Else If line(0) = "offline" Then
+				Document.getElementById("side").innerHtml = Document.getElementById("side").innerHtml + "<p style=""color:grey;"">" & line(1) & "</p>"
+				Else
+					Document.getElementById("side").innerHtml = Document.getElementById("side").innerHtml + "<p style=""color:green;"">" & line(1) & "</p>"
+			End If
+		End If
+	Loop
+	ts.Close
+	onlineUpdateTimer = window.setTimeout("UpdateOnline", 250, "VBScript")
+End Sub
+
+'Updates the Messages
+Sub UpdateMessages
+	On Error resume Next
+	height = document.body.scrollHeight
+	Set fileObj = fs.GetFile("V:\messages.vchat")
+	Set ts = fileObj.OpenAsTextStream(1, -2)
+	Document.getElementById("content").innerHtml=""
+	Do While ts.AtEndOfStream <> True
+		line = deactivateHTML(ts.ReadLine)
+		Document.getElementById("content").innerHtml = Document.getElementById("content").innerHtml + "<p>" & Replace(line,"/tts","") & "</p>"
+		'If InStr(line,"/tts") > 0 Then
+		'	Set tts = CreateObject("Sapi.SpVoice")
+		'	Set tts.Voice = tts.GetVoices.Item(0)
+		'	tts.Speak Replace(line,"/tts","")
+		'End If'
+	Loop
+	ts.Close
+	If height < document.body.scrollHeight Then
+		ScrollToBottom()
+	End If
+	UpdateMessagesTimer = window.setTimeout("UpdateMessages", 250, "VBScript")
+End Sub
+'Scrools to Bottom (Called by UpdateMessages when a new Message was added)
+Sub ScrollToBottom
+	On Error resume Next
+	window.scrollTo 0,document.body.scrollHeight
+End Sub
+
+'Sends a Message
+Sub sendMsg
+	On Error resume Next
+	Set userfile = fs.OpenTextFile("V:\users\" & chatname ,8,true)
+	userfile.WriteLine(msg.value)
+	userfile.Close
+	Set userfile = Nothing
+	msg.value = ""
+	lastMessage = Timer()
+End Sub
+
+Function deactivateHTML(line)
+	line = Replace(line,"<","&lt;")
+	line = Replace(line,">","&gt;")
+	deactivateHTML = line
+End Function
+</script>
+
+<body id="body">
+    <div id="header">
+      <img src="../theme/logo.png" />
+    </div>
+    <div id="content"></div>
+		<div id="side"></div>
+    <div id="footer">
+      <input type="text" id="msg" class="textbox"/>
+			<div id="footer_sendbtn" onclick="sendMsg">
+				<p>Senden</p>
+			</div>
+    </div>
+  </body>
+</html>
